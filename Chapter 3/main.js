@@ -13,6 +13,10 @@ console.log(min(0, 10));
 console.log(min(0, -10));
 // → -10
 */
+function getMinimum(a, b)
+{
+    return (a < b) ? a : b;
+}
 
 /*
 Recursion
@@ -41,6 +45,19 @@ console.log(isEven(75));
 console.log(isEven(-1));
 // → ??
 */
+function isEven(number)
+{
+    number = Math.abs(number);
+    switch(number)
+    {
+        case 0: 
+            return true;
+        case 1: 
+            return false;
+        default: 
+            return isEven(number - 2);
+    }
+}
 
 /*
 Bean counting
@@ -66,3 +83,20 @@ console.log(countBs("BBC"));
 console.log(countChar("kakkerlak", "k"));
 // → 4
 */
+function countBs(text)
+{
+    return countChar(text, "B");
+}
+
+function countChar(text, char)
+{    
+    let count = 0;
+    for (let ch of text)
+    {
+        if (ch === char)
+        {
+            ++count;
+        }
+    }
+    return count;
+}
