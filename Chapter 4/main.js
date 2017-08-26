@@ -27,6 +27,52 @@ console.log(range(5, 2, -1));
 console.log(sum(range(1, 10)));
 // → 55
 */
+function range(start, end, step)
+{
+    if (step === 0)
+    {
+        throw "step cannot be 0";
+    }
+
+    if (step === undefined)
+    {
+        step = 1;
+    }
+
+    let array = [];
+    let condition = (step > 0) 
+        ? n => (n <= end) 
+        : n => (n >= end);
+
+    for (let i = start; condition(i); i += step)
+    {
+        array.push(i);
+    }
+
+    return array;
+}
+
+console.log("1, 10\t", range(1, 10));
+console.log("0, 0\t", range(0, 0));
+console.log("5, 1\t", range(5, 1));
+console.log("-1, 1\t", range(-1, 1));
+
+function sum(array)
+{
+    let acc = 0;
+    for (let item of array)
+    {
+        acc += item;
+    }
+    return acc;
+}
+
+console.log("sum(range(1, 10))\t", sum(range(1, 10)));
+console.log("sum([])\t", sum([]));
+console.log("sum([1])\t", sum([1]));
+
+console.log("1, 10, 2\t", range(1, 10, 2));
+console.log("5, 2, -1\t", range(5, 2, -1));
 
 /*
 Reversing an array
@@ -49,6 +95,41 @@ reverseArrayInPlace(arrayValue);
 console.log(arrayValue);
 // → [5, 4, 3, 2, 1]
 */
+function reverseArray(array)
+{
+    let reversedArray = [];
+    for (let item of array)
+    {
+        reversedArray.unshift(item);
+    }
+    return reversedArray;
+}
+
+console.log("reverseArray([\"A\", \"B\", \"C\"])\t", reverseArray(["A", "B", "C"]));
+console.log("reverseArray([])\t", reverseArray([]));
+console.log("reverseArray([1])\t", reverseArray([1]));
+
+function reverseArrayInPlace(array)
+{
+    for (let i = 0; i < Math.floor(array.length / 2); ++i)
+    {
+        let temp = array[i];
+        array[i] = array[array.length - 1 - i];
+        array[array.length - 1 - i] = temp;
+    }
+}
+
+var arrayValue = [1, 2, 3, 4, 5];
+reverseArrayInPlace(arrayValue);
+console.log("reverseArrayInPlace([1, 2, 3, 4, 5])\t", arrayValue);
+
+arrayValue = [];
+reverseArrayInPlace(arrayValue);
+console.log("reverseArrayInPlace([])\t", arrayValue);
+
+arrayValue = [5];
+reverseArrayInPlace(arrayValue);
+console.log("reverseArrayInPlace([5])\t", arrayValue);
 
 /*
 A list
@@ -93,6 +174,35 @@ console.log(prepend(10, prepend(20, null)));
 console.log(nth(arrayToList([10, 20, 30]), 1));
 // → 20
 */
+function arrayToList(array)
+{
+    return (array.length === 0)
+        ? null
+        : {
+            value: array[0],
+            rest: arrayToList(array.slice(1)) 
+          }
+}
+
+console.log("arrayToList([10, 20])\t", JSON.stringify(arrayToList([10, 20])));
+console.log("arrayToList([])\t", JSON.stringify(arrayToList([])));
+console.log("arrayToList([5])\t", JSON.stringify(arrayToList([5])));
+
+function listToArray(list)
+{
+    if (list === null)
+    {
+        return [];
+    }
+
+    let array = listToArray(list.rest);
+    array.unshift(list.value);
+    return array;
+}
+
+console.log("listToArray(arrayToList([10, 20, 30]))\t", listToArray(arrayToList([10, 20, 30])));
+console.log("listToArray(arrayToList([]))\t", listToArray(arrayToList([])));
+console.log("listToArray(arrayToList([5]))\t", listToArray(arrayToList([5])));
 
 /*
 Deep comparison
