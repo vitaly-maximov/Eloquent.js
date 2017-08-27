@@ -204,6 +204,28 @@ console.log("listToArray(arrayToList([10, 20, 30]))\t", listToArray(arrayToList(
 console.log("listToArray(arrayToList([]))\t", listToArray(arrayToList([])));
 console.log("listToArray(arrayToList([5]))\t", listToArray(arrayToList([5])));
 
+function prepend(item, list)
+{
+    return { value: item, rest: list };
+}
+
+console.log("prepend(10, prepend(20, null))\t", JSON.stringify(prepend(10, prepend(20, null))));
+
+function nth(list, n)
+{
+    if (list === null)
+    {
+        return undefined;
+    }
+
+    return (n === 0)
+        ? list.value
+        : nth(list.rest, n-1);
+}
+
+console.log("nth(arrayToList([10, 20, 30]), 1)\t", nth(arrayToList([10, 20, 30]), 1));
+console.log("nth(arrayToList([10, 20, 30]), 4)\t", nth(arrayToList([10, 20, 30]), 4));
+
 /*
 Deep comparison
 
@@ -229,3 +251,70 @@ console.log(deepEqual(obj, {here: 1, object: 2}));
 console.log(deepEqual(obj, {here: {is: "an"}, object: 2}));
 // → true
 */
+function deepEqual(a, b)
+{
+    if ((a === null) && (b === null))
+    {
+        return true;
+    }
+    if ((a === null) || (b === null))
+    {
+        return false;
+    }
+    if (typeof(a) !== typeof(b))
+    {
+        return false;
+    }
+    if (typeof(a) !== "object")
+    {
+        return (a === b);
+    }
+
+    for (let property in a)
+    {
+        if (property in b === false)
+        {
+            return false;
+        }
+    }
+
+    for (let property in b)
+    {
+        if (property in a === false)
+        {
+            return false;
+        }
+    }
+
+    for (let property in a)
+    {
+        let ap = a[property];
+        let bp = b[property];
+
+        if (!deepEqual(ap, bp))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+console.log("null, null\t", deepEqual(null, null));
+console.log("null, 5\t", deepEqual(null, 5));
+console.log("5, null\t", deepEqual(5, null));
+console.log("1, true\t", deepEqual(1, true));
+console.log("1, 2\t", deepEqual(1, 2));
+console.log("2, 2\t", deepEqual(2, 2));
+console.log("{ a: 5, b: 4}, { a: 5}\t", deepEqual({ a: 5, b: 4 }, { a: 5 }));
+console.log("{ a: 5}, { a: 5, b: 4}\t", deepEqual({ a: 5 }, { a: 5, b: 4 }));
+console.log("{ a: 5, b: 2}, { a: 5, b: 4}\t", deepEqual({ a: 5, b: 2 }, { a: 5, b: 4 }));
+console.log("{ a: 5, b: 4}, { a: 5, b: 4}\t", deepEqual({ a: 5, b: 4 }, { a: 5, b: 4 }));
+
+var obj = {here: {is: "an"}, object: 2};
+console.log(deepEqual(obj, obj));
+// → true
+console.log(deepEqual(obj, {here: 1, object: 2}));
+// → false
+console.log(deepEqual(obj, {here: {is: "an"}, object: 2}));
+// → true
